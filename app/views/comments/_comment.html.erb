@@ -1,0 +1,17 @@
+<%= div_for(comment) do %>
+	<div class="comments_wrapper clearfix">
+		<div class="pull-left">
+			<p class="lead"><%= comment.body %></p>
+			<p><small><%= time_ago_in_words(comment.created_at) %> 전, <strong><% if comment.user.nil? %>익명<% else %><%= comment.user.name %><% end %></strong></small></p>
+		</div>
+
+		<div class="btn-group pull-right">
+			<% if user_signed_in? -%>
+			<% if comment.user == current_user -%>
+				<%= link_to '댓글 삭제', comment, method: :delete, data: { confirm: '정말로 삭제하시겠습니까?' }, class: "btn btn-sm btn-default" %>
+			<% end %>
+			<% else -%>
+			<% end %>
+		</div>
+	</div>
+<% end %>

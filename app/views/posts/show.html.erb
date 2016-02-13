@@ -1,0 +1,53 @@
+<div class="page-header">
+  <h2 class="header-upper"><%= @post.title %><small> by <%= @post.user.name %></small></h2>
+  <small>
+    <span class="name"><%= @post.user.name %> (<%= @post.get_upvotes.size %> / <%= @post.get_downvotes.size %>)</span>
+    <br>
+    <span class="label">작성일</span> <span class="value"><%= @post.created_at %></span>
+    <br>
+    <span class="label">조회수</span> <span class="value"><%= @post.hits %></span>
+    <span class="label">댓글</span> <span class="value"><%= @post.comments.count %></span>
+  </small>
+</div>
+
+<div id="content">
+  <%= raw @post.content %>
+</div>
+
+<% if @post.user == current_user -%>
+	<div class="btn-group">
+    <br>
+		<%= link_to '수정하기', edit_post_path(@post), class: "btn btn-default" %>
+		<%= link_to '삭제하기', @post, method: :delete, data: { confirm: '정말로 삭제하시겠습니까?' }, class: "btn btn-default" %>
+	</div>
+<% end %>
+
+<div class="btn-group pull-right">
+  <%= link_to like_post_path(@post), method: :put, class: "btn btn-default btn-sm" do %>
+    <span class="glyphicon glyphicon-thumbs-up"></span> 좋아요 <%= @post.get_upvotes.size %>
+  <% end %>
+  <%= link_to dislike_post_path(@post), method: :put, class: "btn btn-default btn-sm" do %>
+    <span class="glyphicon glyphicon-thumbs-down"></span> 싫어요 <%= @post.get_downvotes.size %>
+  <% end %>
+</div>
+
+<h3 class="comments_title">
+  댓글 개수 : <%= @post.comments.count %>
+</h3>
+
+<div id="comments">
+  <%= render :partial => @post.comments %>
+</div>
+
+<% if user_signed_in? -%>
+<%= simple_form_for [@post, Comment.new] do |f| %>
+  <div class="field">
+    <%= f.text_area :body, class: "form-control" %>
+  </div>
+  <br>
+  <%= f.submit "댓글 달기", class: "btn btn-primary" %>
+  <%= link_to '뒤로 돌아가기', posts_path, class: "btn btn-default" %>
+<% end %>
+<% else -%>
+  <%= link_to '뒤로 돌아가기', posts_path, class: "btn btn-default" %>
+<% end -%>
