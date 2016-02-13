@@ -1,6 +1,12 @@
+<%# 실제 글을 보는 부분입니다. %>
+
+<%# header 부분으로 제목/이름 등등과 작성자의 정보가 표시됩니다. %>
 <div class="page-header">
-  <h2 class="header-upper"><%= @post.title %><small> by <%= @post.user.name %></small></h2>
+  <%# 제목, 글쓴이 이름 %>
+  <h2 class="header-upper"><%= @post.title %></h2>
+  <%# 이 부분부터는 작은 글씨로 표시됩니다. %>
   <small>
+    <%# 글 정보 -> 작성자/좋아요/싫어요/작성일/조회수/댓글수 %>
     <span class="name"><%= @post.user.name %> (<%= @post.get_upvotes.size %> / <%= @post.get_downvotes.size %>)</span>
     <br>
     <span class="label">작성일</span> <span class="value"><%= @post.created_at %></span>
@@ -8,46 +14,56 @@
     <span class="label">조회수</span> <span class="value"><%= @post.hits %></span>
     <span class="label">댓글</span> <span class="value"><%= @post.comments.count %></span>
   </small>
+  <%# 여기까지 작은 글씨로 표시된다. %>
 </div>
 
+<%# 실제 글의 내용이 표시되는 부분입니다. %>
 <div id="content">
   <%= raw @post.content %>
+  <br>
 </div>
 
-<% if @post.user == current_user -%>
-	<div class="btn-group">
-    <br>
-		<%= link_to '수정하기', edit_post_path(@post), class: "btn btn-default" %>
-		<%= link_to '삭제하기', @post, method: :delete, data: { confirm: '정말로 삭제하시겠습니까?' }, class: "btn btn-default" %>
-	</div>
-<% end %>
+<div class="row">
+  <div class="container">
 
-<div class="btn-group pull-right">
-  <%= link_to like_post_path(@post), method: :put, class: "btn btn-default btn-sm" do %>
-    <span class="glyphicon glyphicon-thumbs-up"></span> 좋아요 <%= @post.get_upvotes.size %>
-  <% end %>
-  <%= link_to dislike_post_path(@post), method: :put, class: "btn btn-default btn-sm" do %>
-    <span class="glyphicon glyphicon-thumbs-down"></span> 싫어요 <%= @post.get_downvotes.size %>
-  <% end %>
+    <%# 글을 쓴 사람이라면, 수정과 삭제 권한이 부여됩니다. %>
+    <% if @post.user == current_user -%>
+    	<div class="btn-group pull-left">
+    		<%= link_to '수정하기', edit_post_path(@post), class: "btn btn-default btn-sm" %>
+    		<%= link_to '삭제하기', @post, method: :delete, data: { confirm: '정말로 삭제하시겠습니까?' }, class: "btn btn-default btn-sm" %>
+    	</div>
+    <% end %>
+
+    <%# 좋아요/싫어요 기능입니다. 아이콘은 bootstrap 을 사용하였습니다. 바꾸고 싶다면, bootstrap 사이트 참고 %>
+    <div class="btn-group pull-right right-padding-minus">
+      <%= link_to like_post_path(@post), method: :put, class: "btn btn-default btn-sm" do %>
+        <span class="glyphicon glyphicon-thumbs-up"></span> 좋아요 <%= @post.get_upvotes.size %>
+      <% end %>
+      <%= link_to dislike_post_path(@post), method: :put, class: "btn btn-default btn-sm" do %>
+        <span class="glyphicon glyphicon-thumbs-down"></span> 싫어요 <%= @post.get_downvotes.size %>
+      <% end %>
+    </div>
+
+  </div>
 </div>
 
-<h3 class="comments_title">
-  댓글 개수 : <%= @post.comments.count %>
-</h3>
-
+<%# 작성된 댓글들을 보여주는 부분입니다. %>
 <div id="comments">
   <%= render :partial => @post.comments %>
 </div>
 
+<%# 로그인을 한 상태라면 댓글을 작성할 수 있도록 textarea 와 버튼이 제공됩니다. %>
 <% if user_signed_in? -%>
-<%= simple_form_for [@post, Comment.new] do |f| %>
-  <div class="field">
-    <%= f.text_area :body, class: "form-control" %>
-  </div>
-  <br>
-  <%= f.submit "댓글 달기", class: "btn btn-primary" %>
-  <%= link_to '뒤로 돌아가기', posts_path, class: "btn btn-default" %>
-<% end %>
+  <%= simple_form_for [@post, Comment.new] do |f| %>
+    <%# textarea 부분입니다. %>
+    <br>
+    <div class="field">
+      <%= f.text_area :body, class: "form-control" %>
+    </div>
+    <br>
+    <%= f.submit "댓글 달기", class: "btn btn-primary" %>
+    <%= link_to '뒤로 돌아가기', posts_path, class: "btn btn-default" %>
+  <% end %>
 <% else -%>
   <%= link_to '뒤로 돌아가기', posts_path, class: "btn btn-default" %>
 <% end -%>

@@ -9,21 +9,36 @@
 	font-weight: bold;
 }
 
+/* 가운데 정렬 */
 .text-center {
-	text-align: center;
+	text-align: center !important;
+}
+/* 수직 중앙 정렬 */
+.text-ver-center{
+	vertical-align: middle !important;
 }
 
+/* 제목 밑에 회색 줄 긋기 */
 .header-upper {
 	border-bottom: 5px solid #ddd;
 	margin-bottom: 20px;
 	font-size: 20pt;
 }
 
+/* 배지 색 억지로 주황색 */
 .badge {
 	background-color: #f89406 !important;
 }
 
 .label {
-    color: #ffffff;
-    background-color: #999999;
+	background-color: #999999;
+}
+
+.right-padding-minus {
+	padding-right: 30px;
+}
+
+.form-signin {
+	max-width: 400px !important;
+	margin: 0 auto;
 }

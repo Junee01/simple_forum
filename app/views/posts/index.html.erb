@@ -1,10 +1,12 @@
+<%# 전체 목록을 보여주는 기본 페이지이다.
+     %>
+
 <table class="table table-striped">
 	<thead>
           <tr>
             <th>글번호</th>
             <th>제목/글쓴이</th>
-            <th>최근 수정일</th>
-            <th>조회 수</th>
+            <th class="text-center">조회 수</th>
             <th class="text-center">좋아요/싫어요</th>
             <th>마지막 댓글</th>
           </tr>
@@ -12,22 +14,28 @@
     <tbody>
     	<% @posts.each do |post| %>
     		<tr>
+                <%# 글의 고유 번호 %>
                 <td><%= post.id %></td>
+                <%# 글의 제목/총 댓글 수/글쓴이/최근 수정 시간 + 전, 생성 날짜%>
     			<td>
                     <%= link_to post.title, post %> <span class="badge"><%= post.comments.count %></span><br>
                     <small><strong><%= post.user.name %></strong>  (<%= time_ago_in_words(post.updated_at) %> 전, <%= post.created_at.to_date %>)</small>
                 </td>
-    			<td><%= time_ago_in_words(post.updated_at) %> 전, <%= post.updated_at.to_date %></td>
+                <%# 조회수가 50이상이면, 조회수가 주황색으로 표시된다. 아니면, 그냥 표현된다. %>
     			<% if post.hits >= 50 %>
-                    <td class="over-fifty"><%= post.hits %></td>
+                    <td class="over-fifty text-center text-ver-center"><%= post.hits %></td>
                 <% else %>
-                    <td><%= post.hits %></td>
+                    <td class="text-center text-ver-center"><%= post.hits %></td>
                 <% end %>
-                <td class="text-center"><%= post.get_upvotes.size %>/<%= post.get_downvotes.size %></td>
+                <%# (좋아요/싫어요) %>
+                <td class="text-center text-ver-center"><%= post.get_upvotes.size %>/<%= post.get_downvotes.size %></td>
                 <% if post.comments.empty? %>
                     <td></td>
+                <%# 가장 마지막으로 댓글을 쓴 사람에 대한 시간과 이름 정보 %>
                 <% else %>
-                    <td><%= time_ago_in_words(post.updated_at) %> 전, <strong><% if post.comments.last.user.nil? %>익명<% else %><%= post.comments.last.user.name %><% end %></strong></td>
+                    <td class= "text-ver-center">
+                        <%= time_ago_in_words(post.comments.last.updated_at) %> 전, <strong><%= post.comments.last.user.name %></strong>
+                    </td>
                 <% end %>
     		</tr>
     	<% end %>

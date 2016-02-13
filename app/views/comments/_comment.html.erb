@@ -1,15 +1,28 @@
+<%# 
+	이부분은 생성된 댓글이 보여질 때 사용되는 포맷이다.
+	글의 내용, 생성일, 유저의 이름을 알 수 있다.
+	댓글 삭제는 해당 유저에게만 부여된다.
+%>
+
 <%= div_for(comment) do %>
 	<div class="comments_wrapper clearfix">
 		<div class="pull-left">
-			<p class="lead"><%= comment.body %></p>
-			<p><small><%= time_ago_in_words(comment.created_at) %> 전, <strong><% if comment.user.nil? %>익명<% else %><%= comment.user.name %><% end %></strong></small></p>
+			<p class="lead">
+				<%= comment.body %>
+			</p>
+			<p>
+				<small>
+					(<%= time_ago_in_words(comment.created_at) %> 전, <strong><%= comment.user.name %></strong>)
+				</small>
+			</p>
 		</div>
 
 		<div class="btn-group pull-right">
+			<%# 유저가 로그인된 상태라면, 그 유저가 쓴 글인지를 확인한다. 맞다면, 삭제 권한을 부여한다. %>
 			<% if user_signed_in? -%>
-			<% if comment.user == current_user -%>
-				<%= link_to '댓글 삭제', comment, method: :delete, data: { confirm: '정말로 삭제하시겠습니까?' }, class: "btn btn-sm btn-default" %>
-			<% end %>
+				<% if comment.user == current_user -%>
+					<%= link_to '댓글 삭제', comment, method: :delete, data: { confirm: '정말로 삭제하시겠습니까?' }, class: "btn btn-sm btn-default" %>
+				<% end %>
 			<% else -%>
 			<% end %>
 		</div>

@@ -1,3 +1,9 @@
+<%# 
+	이 부분은 모든 페이지에 공통적으로 해당되는 부분이다.
+	상위에 navbar 가 존재한다.
+	그리고 js/css 파일을 turbolinks 로 한번에 모두 가져와서 적용시킨다.
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,36 +14,38 @@
 </head>
 <body>
 	<header class="navbar navbar-default" role="navigation">
-    <div class="navbar-inner">
-      <div class="container">
-        <div id="logo" class="navbar-brand"><%= link_to "게시판", root_path %></div>
-        <nav class="collapse navbar-collapse navbar-ex1-collapse">
-        	<% if user_signed_in? -%>
-				<ul class="nav navbar-nav navbar-right">
-					<li><%= link_to '글 쓰기', new_post_path %></li>
-					<li><%= link_to '회원 정보', edit_user_registration_path %></li>
-					<li><%= link_to '로그아웃', destroy_user_session_path, :method => :delete %></li>
-				</ul>
-			<% else -%>
-				<ul class="nav navbar-nav pull-right">
-					<li><%= link_to '회원가입', new_user_registration_path %></li>
-					<li><%= link_to '로그인', new_user_session_path %></li>
-				</ul>
-			<% end -%>
-        </nav>
-      </div>
-    </div>
-  </header>
-
+	    <div class="navbar-inner">
+	      <div class="container">
+	        <div id="logo" class="navbar-brand"><%= link_to "게시판", root_path %></div>
+	        <nav class="collapse navbar-collapse navbar-ex1-collapse">
+	        	<%# 로그인이 되어 있는 상태에는 아래 세 가지가 표시된다. %>
+	        	<% if user_signed_in? -%>
+					<ul class="nav navbar-nav navbar-right">
+						<li><%= link_to '글 쓰기', new_post_path %></li>
+						<li><%= link_to '회원 정보', edit_user_registration_path %></li>
+						<li><%= link_to '로그아웃', destroy_user_session_path, :method => :delete %></li>
+					</ul>
+				<% else -%>
+					<%# 회원가입과 로그인은 우측 정렬로 로그인이 되어있지 않은 경우에 표시된다. %>
+					<ul class="nav navbar-nav pull-right">
+						<li><%= link_to '회원가입', new_user_registration_path %></li>
+						<li><%= link_to '로그인', new_user_session_path %></li>
+					</ul>
+				<% end -%>
+	        </nav>
+	      </div>
+	    </div>
+  	</header>
 	<div id="main_content" class="container">
+		<%# 각종 에러 메시지들을 보여준다. bootstrap 으로 구현되어 메시지와 함께 파랑색 배경으로 표시된다. %>
 		<% flash.each do |name, msg| %>
 			<%= content_tag(:div, msg, class: "alert alert-info") %>
 		<% end %>
 
 		<div id="content" class="col-md-12 center-block">
+			<%# 이 부분이 실제 여러 페이지들이 들어오는 부분이다. %>
 			<%= yield %>
 		</div>
 	</div>
-	
 </body>
 </html>

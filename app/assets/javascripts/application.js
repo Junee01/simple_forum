@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery
+
+//부트스트랩, 리치 편집기
 //= require bootstrap-sprockets
 //= require tinymce-jquery
 //= require turbolinks

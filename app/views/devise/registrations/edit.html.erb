@@ -1,3 +1,9 @@
+<%# 
+    이 부분은 회원정보를 수정하는 포맷이다.
+    이름/이메일/비밀번호/비밀번호 확인으로 구성된다.
+    또한 계정 삭제도 가능하다.
+%>
+
 <h2>회원정보 수정</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>

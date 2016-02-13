@@ -1,3 +1,6 @@
+<%# 이 부분은 글 작성을 할 때 공통적을 사용되는 포맷이다.
+    제목과 내용이 있고, 내용은 tinymce css/js 가 적용되어 보여진다. %>
+
 <%= form_for(@post) do |f| %>
   <% if @post.errors.any? %>
     <div id="error_explanation">

@@ -1,36 +1,32 @@
 class PostsController < ApplicationController
+  #post 는 생성,보기,수정,삭제가 가능하다.
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  #post 는 생성한 유저에게는 삭제와 수정이 가능하지만, 나머지는 보기만 가능하다.
   before_filter :authenticate_user!, except: [:index, :show]
   before_action :authorized_user, only: [:edit, :update, :destroy]
 
-  # GET /posts
-  # GET /posts.json
+  #글 목록 보여주기(페이지는 각 5개씩 보여주도록 페이지네이션 작업(will_paginate 사용))
   def index
-    @posts = Post.all.paginate(page: params[:page], per_page: 10)
+    @posts = Post.all.paginate(page: params[:page], per_page: 5)
   end
 
-  # GET /posts/1
-  # GET /posts/1.json
+  #글 Read
   def show
     if @post.user != current_user
       Post.increment_counter(:hits, @id)
     end
   end
 
-  # GET /posts/new
+  #글 객체 생성
   def new
-    #@post = Post.new
     @post = current_user.posts.build
   end
 
-  # GET /posts/1/edit
   def edit
   end
 
-  # POST /posts
-  # POST /posts.json
+  #글 생성 작업
   def create
-    #@post = Post.new(post_params)
     @post = current_user.posts.build(post_params)
 
     respond_to do |format|
@@ -44,8 +40,7 @@ class PostsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /posts/1
-  # PATCH/PUT /posts/1.json
+  #글 수정 작업
   def update
     respond_to do |format|
       if @post.update(post_params)
@@ -57,9 +52,7 @@ class PostsController < ApplicationController
       end
     end
   end
-
-  # DELETE /posts/1
-  # DELETE /posts/1.json
+  #글 삭제 작업
   def destroy
     @post.destroy
     respond_to do |format|
@@ -68,12 +61,13 @@ class PostsController < ApplicationController
     end
   end
 
+  #좋아요
   def upvote
     @post = Post.find(params[:id])
     @post.upvote_by current_user
     redirect_to :back
   end
-
+  #싫어요
   def downvote
     @post = Post.find(params[:id])
     @post.downvote_by current_user
@@ -81,18 +75,19 @@ class PostsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
+    # Callback - 글 초기화 작업
     def set_post
       @id = params[:id]
       @post = Post.find(params[:id])
     end
-
+    # Callback - 유저 확인 작업
     def authorized_user
       @post = current_user.posts.find_by(id: params[:id])
       redirect_to posts_path, notice: "Not authorized to edit this post" if @post.nil?
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Cakkbacj - 글 확인 작업
     def post_params
       params.require(:post).permit(:title, :content)
     end
