@@ -34,11 +34,25 @@
 	background-color: #999999;
 }
 
+.label-good {
+	color: #006b78;
+}
+
+.label-bad {
+	color: #f93;
+}
+
 .right-padding-minus {
 	padding-right: 30px;
 }
 
+/*  */
 .form-signin {
 	max-width: 400px !important;
 	margin: 0 auto;
+}
+
+.profile_size img {
+	width: 72px;
+	height: 72px;
 }

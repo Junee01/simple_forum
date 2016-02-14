@@ -28,7 +28,7 @@
                     <td class="text-center text-ver-center"><%= post.hits %></td>
                 <% end %>
                 <%# (좋아요/싫어요) %>
-                <td class="text-center text-ver-center"><%= post.get_upvotes.size %>/<%= post.get_downvotes.size %></td>
+                <td class="text-center text-ver-center"><span class="label-good"><%= post.get_upvotes.size %></span>/<span class="label-bad"><%= post.get_downvotes.size %></span></td>
                 <% if post.comments.empty? %>
                     <td></td>
                 <%# 가장 마지막으로 댓글을 쓴 사람에 대한 시간과 이름 정보 %>
@@ -41,5 +41,5 @@
     	<% end %>
     </tbody>
 </table>
-
-<%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
+<%# Bootstrap 디자인으로 페이지네이션 기능을 지원합니다. %>
+<div class="text-center"><%= will_paginate @posts, renderer: BootstrapPagination::Rails %></div>

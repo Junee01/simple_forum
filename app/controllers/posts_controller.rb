@@ -89,6 +89,6 @@ class PostsController < ApplicationController
 
     # Cakkbacj - 글 확인 작업
     def post_params
-      params.require(:post).permit(:title, :content)
+      params.require(:post).permit(:title, :content, :image)
     end
 end

@@ -5,15 +5,28 @@
   <%# 제목, 글쓴이 이름 %>
   <h2 class="header-upper"><%= @post.title %></h2>
   <%# 이 부분부터는 작은 글씨로 표시됩니다. %>
-  <small>
-    <%# 글 정보 -> 작성자/좋아요/싫어요/작성일/조회수/댓글수 %>
-    <span class="name"><%= @post.user.name %> (<%= @post.get_upvotes.size %> / <%= @post.get_downvotes.size %>)</span>
-    <br>
-    <span class="label">작성일</span> <span class="value"><%= @post.created_at %></span>
-    <br>
-    <span class="label">조회수</span> <span class="value"><%= @post.hits %></span>
-    <span class="label">댓글</span> <span class="value"><%= @post.comments.count %></span>
-  </small>
+  <div class="row">
+    <div class="profile_size col-md-1">
+      <% if @post.user.avatar.file? %>
+        <%= image_tag @post.user.avatar.url(:medium) %>
+      <% else %>
+        <%# skip %>
+      <% end %>
+    </div>
+    <div class="col-md-11">
+      <small>  
+        <%# 글 정보 -> 작성자/좋아요/싫어요/작성일/조회수/댓글수 %>
+        <span class="name"><%= @post.user.name %> (<%= @post.get_upvotes.size %> / <%= @post.get_downvotes.size %>)</span>
+        <br>
+        <span class="label">작성일</span> <span class="value"><%= @post.created_at.to_date %></span>
+        <span class="label">수정일</span> <span class="value"><%= @post.updated_at.to_date %></span>
+        <br>
+        <span class="label">조회수</span> <span class="value"><%= @post.hits %></span>
+        <span class="label">댓글</span> <span class="value"><%= @post.comments.count %></span>
+      </small>
+    </div>
+  </div>
+  
   <%# 여기까지 작은 글씨로 표시된다. %>
 </div>
 
@@ -46,6 +59,8 @@
 
   </div>
 </div>
+
+<br><br>
 
 <%# 작성된 댓글들을 보여주는 부분입니다. %>
 <div id="comments">

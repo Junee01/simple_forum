@@ -1,7 +1,6 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
 
-
   #댓글 새로 생성하기
   def create
     @post = Post.find(params[:post_id])
