@@ -21,9 +21,9 @@
                     <%= link_to post.title, post %> <span class="badge"><%= post.comments.count %></span><br>
                     <small><strong><%= post.user.name %></strong>  (<%= time_ago_in_words(post.updated_at) %> 전, <%= post.created_at.to_date %>)</small>
                 </td>
-                <%# 조회수가 50이상이면, 조회수가 주황색으로 표시된다. 아니면, 그냥 표현된다. %>
-    			<% if post.hits >= 50 %>
-                    <td class="over-fifty text-center text-ver-center"><%= post.hits %></td>
+                <%# 조회수가 30이상이면, 조회수가 주황색으로 표시된다. 아니면, 그냥 표현된다. %>
+    			<% if post.hits >= 30 %>
+                    <td class="over-thirty text-center text-ver-center"><%= post.hits %></td>
                 <% else %>
                     <td class="text-center text-ver-center"><%= post.hits %></td>
                 <% end %>
