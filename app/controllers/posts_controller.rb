@@ -7,7 +7,7 @@ class PostsController < ApplicationController
 
   #글 목록 보여주기(페이지는 각 5개씩 보여주도록 페이지네이션 작업(will_paginate 사용))
   def index
-    @posts = Post.all.paginate(page: params[:page], per_page: 5)
+    @posts = Post.all.order("created_at desc").paginate(page: params[:page], per_page: 5)
   end
 
   #글 Read
